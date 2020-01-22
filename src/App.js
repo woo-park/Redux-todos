@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TasksPage from './components/TasksPage';
 
 import { connect } from 'react-redux';
-import { createTask, editTask } from './actions';
+import { createTask, editTask, fetchTasks } from './actions';
 
 /*
   const mockTasks = [
@@ -23,6 +23,12 @@ import { createTask, editTask } from './actions';
 
 
 class App extends Component {
+
+  //AJAX request
+  componentDidMount() {
+    this.props.dispatch(fetchTasks());
+  }
+
   onCreateTask = ( {title, description }) => {   //destructuring props
     //dispatch method earned from store
     this.props.dispatch(createTask({ title, description})
@@ -42,6 +48,7 @@ class App extends Component {
           tasks={this.props.tasks}
           onCreateTask={this.onCreateTask}
           onStatusChange={this.onStatusChange}
+          isLoading={this.props.isLoading}
         />
 
       </div>
@@ -50,9 +57,8 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  return {
-    tasks: state.tasks
-  }
+  const { tasks, isLoading } = state.tasks;
+  return { tasks, isLoading };
 }
 
 export default connect(mapStateToProps) (App);
