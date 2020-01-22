@@ -8,6 +8,7 @@ import './index.css';
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
+import logger from './Middleware/logger';
 
 import thunk from 'redux-thunk';
 import { devToolsEnhancer } from 'redux-devtools-extension';
@@ -22,7 +23,7 @@ const rootReducer = (state = {}, action) => {
 
 const store = createStore(
     rootReducer,
-    composeWithDevTools(applyMiddleware(thunk))
+    composeWithDevTools(applyMiddleware(thunk, logger))
 );   //pass in the reducer to the store
 //passing in enhancer
 

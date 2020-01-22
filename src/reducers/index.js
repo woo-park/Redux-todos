@@ -19,6 +19,7 @@ const mockTasks = [
 const initialState = {
   tasks: [],
   isLoading: false,
+  error: null,
 }
 
 //action creator takes in -> 1. state 2. action
@@ -71,6 +72,17 @@ export default function tasks(state = initialState, action) {
       };
       */
     }
+    case 'FETCH_TASKS_FAILED': {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error,
+      }
+    }
+
+
+
+    /*
 
     case 'CREATE_TASK': {
       return { tasks: state.tasks.concat(action.payload) }
@@ -91,6 +103,7 @@ export default function tasks(state = initialState, action) {
       }
     }
 
+    */
 
     default: {
         return state//not doing anything with action rn
