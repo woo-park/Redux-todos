@@ -30,8 +30,9 @@ export default function tasks(state = initialState, action) {
     case 'FETCH_TASKS_SUCCEEDED': {
       return {
         ...state,     //adds the previous state
+        tasks: action.payload,
         isLoading: false, //not sure why i need to do this here
-        tasks: action.payload.tasks,
+
       }
     }
     case 'FETCH_TASKS_STARTED': {
@@ -43,7 +44,7 @@ export default function tasks(state = initialState, action) {
     case 'CREATE_TASK_SUCCEEDED': {
       return {
         ...state,   //isLoading: false
-        tasks: state.tasks.concat(action.payload.task)
+        tasks: state.tasks.concat(action.payload)
       }
     }
 

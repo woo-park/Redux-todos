@@ -1,6 +1,52 @@
 import axios from 'axios';
 import * as api from '../api';
 
+import { CALL_API } from '../Middleware/api';
+
+//defines three constants for each action dispatched within fetchTasks
+export const FETCH_TASKS_STARTED = 'FETCH_TASKS_STARTED';
+export const FETCH_TASKS_SUCCEEDED = 'FETCH_TASKS_SUCCEEDED';
+export const FETCH_TASKS_FAILED = 'FETCH_TASKS_FAILED';
+
+
+// this approach === instead of handling in action creators, you handle in middleware
+// you are returning an object with key 'CALL_API' -> types and endpoint <= this whole object is action object from middlware point of view
+export function fetchTasks() {
+  return {
+    [CALL_API]: {
+      types: [FETCH_TASKS_STARTED, FETCH_TASKS_SUCCEEDED, FETCH_TASKS_FAILED],
+      endpoint: '/tasks',
+    }
+  }
+}
+
+//defines three constants for each action dispatched within fetchTasks
+export const CREATE_TASK_STARTED = 'CREATE_TASK_STARTED';
+export const CREATE_TASK_SUCCEEDED = 'CREATE_TASK_SUCCEEDED';
+export const CREATE_TASK_FAILED = 'CREATE_TASK_FAILED';
+
+
+// this approach === instead of handling in action creators, you handle in middleware
+// you are returning an object with key 'CALL_API' -> types and endpoint <= this whole object is action object from middlware point of view
+export function createTask({ title, description, status = 'Unstarted' }) {
+  return {
+    [CALL_API]: {
+      types: [CREATE_TASK_STARTED, CREATE_TASK_SUCCEEDED, CREATE_TASK_FAILED],
+      endpoint: '/tasks',
+      method: 'POST',
+      body: {
+        title: title,
+        description: description,
+        status: status,
+      },
+    }
+  }
+}
+
+
+
+
+
 let _id = 1;
 export function uniqueId() {
   return _id++;
@@ -52,25 +98,25 @@ function fetchTasksFailed(error) {
   }
 }
 
-export function fetchTasks() {
-  return dispatch => {
-    dispatch(fetchTasksStarted());
-
-    api.fetchTasks()
-      .then(resp => {
-        setTimeout(()=>{
-          dispatch(fetchTaskSuceeded(resp.data))
-        }, 2000)
-
-        // for practice
-        // throw new Error('Oh noes! unable to fetch');
-      })
-      .catch(err => {   //wonder how err object looks like
-        dispatch(fetchTasksFailed(err.message))
-      })
-
-  }
-}
+// export function fetchTasks() {
+//   return dispatch => {
+//     dispatch(fetchTasksStarted());
+//
+//     api.fetchTasks()
+//       .then(resp => {
+//         setTimeout(()=>{
+//           dispatch(fetchTaskSuceeded(resp.data))
+//         }, 2000)
+//
+//         // for practice
+//         // throw new Error('Oh noes! unable to fetch');
+//       })
+//       .catch(err => {   //wonder how err object looks like
+//         dispatch(fetchTasksFailed(err.message))
+//       })
+//
+//   }
+// }
 
 
 
@@ -95,24 +141,24 @@ export function fetchTasks() {
 
 
 // exporting action creator -> that returns action objects
-export function createTask({ title, description, status = "Unstarted" }) { //destructure passed in object from App.js
-  /*
-  return {
-    type: 'CREATE_TASK',
-    payload: {
-      id: uniqueId(),
-      title: title,
-      description: description,
-      status: 'Unstarted',    //unstarted default to begin with
-    }
-  }
-  */
-  return dispatch => {
-    api.createTask({ title, description, status }).then(resp => {
-      dispatch(createTaskSucceeded(resp.data)); //check why its resp.data
-    });
-  }
-}
+// export function createTask({ title, description, status = "Unstarted" }) { //destructure passed in object from App.js
+//   /*
+//   return {
+//     type: 'CREATE_TASK',
+//     payload: {
+//       id: uniqueId(),
+//       title: title,
+//       description: description,
+//       status: 'Unstarted',    //unstarted default to begin with
+//     }
+//   }
+//   */
+//   return dispatch => {
+//     api.createTask({ title, description, status }).then(resp => {
+//       dispatch(createTaskSucceeded(resp.data)); //check why its resp.data
+//     });
+//   }
+// }
 
 
 //synchronous action creator -> pure function

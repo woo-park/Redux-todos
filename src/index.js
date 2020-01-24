@@ -13,6 +13,8 @@ import logger from './Middleware/logger';
 import thunk from 'redux-thunk';
 import { devToolsEnhancer } from 'redux-devtools-extension';
 
+import apiMiddleware from './Middleware/api';
+
 import * as serviceWorker from './serviceWorker';
 
 const rootReducer = (state = {}, action) => {
@@ -23,7 +25,7 @@ const rootReducer = (state = {}, action) => {
 
 const store = createStore(
     rootReducer,
-    composeWithDevTools(applyMiddleware(thunk, logger))
+    composeWithDevTools(applyMiddleware(thunk, apiMiddleware, logger))
 );   //pass in the reducer to the store
 //passing in enhancer
 
